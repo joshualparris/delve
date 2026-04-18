@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#11131a">
+  <meta name="description" content="Sigil Delve — a static-browser tactical dungeon crawler inspired by 5e-style combat logic.">
+  <title>Sigil Delve</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <div id="flash-message" class="flash-message" hidden></div>
+
+    <section id="title-screen" class="screen hero-screen">
+      <div class="title-card">
+        <p class="eyebrow">Static browser tactics crawler</p>
+        <h1>SIGIL DELVE</h1>
+        <p class="lede">Take four adventurers into a short, brutal arcane dungeon run. Fight on a square grid with initiative, movement, actions, bonus actions, reactions, cover, saves, concentration, conditions, limited resources, and a final boss that can actually ruin your day.</p>
+        <div class="title-actions">
+          <button id="new-run-btn" class="big-btn primary">New Run</button>
+          <button id="continue-run-btn" class="big-btn">Continue Run</button>
+          <button id="title-help-btn" class="big-btn">How to Play</button>
+        </div>
+        <div class="title-notes">
+          <div class="pill">Desktop + mobile browser</div>
+          <div class="pill">Local save</div>
+          <div class="pill">GitHub Pages ready</div>
+        </div>
+        <p id="title-tests" class="subtle"></p>
+      </div>
+    </section>
+
+    <section id="help-screen" class="screen" hidden>
+      <div class="modal-card help-card">
+        <h2>How to Play</h2>
+        <div class="help-grid">
+          <div>
+            <h3>Core flow</h3>
+            <p>Pick a route across 7 stages. Rooms include combat, treasure, events, short rests, and a final boss.</p>
+            <h3>Turn structure</h3>
+            <p>Each hero gets movement, one action, one bonus action when relevant, and one reaction each round. Opportunity attacks fire automatically when someone leaves melee reach. Some defensive reactions also auto-trigger.</p>
+          </div>
+          <div>
+            <h3>Touch controls</h3>
+            <p>Tap a hero to inspect them. On that hero’s turn, tap <strong>Move</strong> then a highlighted tile to move. Tap an ability button, then tap a valid target or tile. No hover is required.</p>
+            <h3>Undo</h3>
+            <p>Undo rewinds the current hero turn before random results are revealed. Move first, then undo if you want to reposition. Once dice resolve, that turn is locked in.</p>
+          </div>
+          <div>
+            <h3>Conditions</h3>
+            <p>Prone, stunned, poisoned, restrained, invisible, frightened, and burning all matter. Watch the log and condition chips.</p>
+            <h3>Resources</h3>
+            <p>Fighter uses Grit, Rogue uses Cunning, Cleric uses Faith, Wizard uses Arcana. Short rests recover some of these resources, but only twice per run.</p>
+          </div>
+          <div>
+            <h3>Board language</h3>
+            <p>Pillars and walls block line of sight. Mire slows movement. Spikes hurt on entry. Necrotic sigils punish ending your turn there. Shrines heal once. Barrels explode.</p>
+            <h3>Win condition</h3>
+            <p>Defeat the Sigil Tyrant and keep enough of your party standing to finish strong.</p>
+          </div>
+        </div>
+        <div class="title-actions">
+          <button id="save-run-btn" class="big-btn">Save Run</button>
+          <button id="back-to-title-btn" class="big-btn primary">Back</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="game-screen" class="screen game-layout" hidden>
+      <header id="topbar" class="topbar"></header>
+      <main class="layout-grid">
+        <aside class="column column-left">
+          <div id="map-panel" class="panel"></div>
+          <div id="party-panel" class="panel"></div>
+        </aside>
+
+        <section class="center-stage">
+          <div id="board" class="board panel"></div>
+          <div id="action-bar" class="panel action-bar"></div>
+        </section>
+
+        <aside class="column column-right">
+          <div id="turn-panel" class="panel"></div>
+          <div id="selection-panel" class="panel"></div>
+          <div class="panel log-panel">
+            <div class="panel-header inline-between">
+              <h2>Combat Log</h2>
+              <button id="return-title-btn" class="tiny-btn">Title</button>
+            </div>
+            <div id="combat-log" class="combat-log"></div>
+          </div>
+        </aside>
+      </main>
+      <div id="overlay-panel" class="overlay-panel" hidden></div>
+    </section>
+
+    <section id="victory-screen" class="screen end-screen" hidden>
+      <div class="modal-card">
+        <p class="eyebrow success">Victory</p>
+        <h2>The Sigil Tyrant Falls</h2>
+        <p>You cut through the sanctum and broke the final seal.</p>
+        <div id="victory-summary"></div>
+        <div class="title-actions">
+          <button id="play-again-btn" class="big-btn primary">New Run</button>
+          <button id="return-title-btn-2" class="big-btn" onclick="document.getElementById('return-title-btn').click()">Title</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="defeat-screen" class="screen end-screen" hidden>
+      <div class="modal-card">
+        <p class="eyebrow danger">Defeat</p>
+        <h2>The Delve Claims You</h2>
+        <p>The sigils remain intact. The dungeon keeps its secrets.</p>
+        <div id="defeat-summary"></div>
+        <div class="title-actions">
+          <button id="defeat-return-btn" class="big-btn primary">Title</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="./content.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>

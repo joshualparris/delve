@@ -1,0 +1,9 @@
+{
+  "name": "Sigil Delve",
+  "short_name": "Sigil Delve",
+  "description": "A static-browser tactical dungeon crawler inspired by 5e-style combat.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0d12",
+  "theme_color": "#11131a"
+}

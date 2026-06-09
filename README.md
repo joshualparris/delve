@@ -7,6 +7,14 @@ The design targets the uploaded project brief, including a mobile-friendly UI, d
 
 ---
 
+## Player and test controls
+
+- Press `F` or use the title-screen button to toggle fullscreen.
+- `window.render_game_to_text()` returns a concise JSON summary of the expedition and active combat.
+- `window.advanceTime(ms)` deterministically refreshes the turn-based view and returns the same summary.
+
+---
+
 ## Files
 
 - `index.html` — shell and screen layout

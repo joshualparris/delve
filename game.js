@@ -18,6 +18,11 @@
     registerSW();
     runSelfChecks();
     renderTitle();
+    window.render_game_to_text = renderGameToText;
+    window.advanceTime = () => {
+      render();
+      return renderGameToText();
+    };
   }
 
   function cacheEls() {
@@ -71,12 +76,68 @@
       showScreen('title');
       renderTitle();
     });
+    document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
+    document.addEventListener('keydown', (event) => {
+      if (event.key.toLowerCase() === 'f' && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        event.preventDefault();
+        toggleFullscreen();
+      }
+    });
 
     app.els.board.addEventListener('click', onBoardClick);
     app.els.actions.addEventListener('click', onActionBarClick);
     app.els.partyPanel.addEventListener('click', onPartyPanelClick);
     app.els.mapPanel.addEventListener('click', onMapPanelClick);
     app.els.overlay.addEventListener('click', onOverlayClick);
+  }
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.();
+      return;
+    }
+    document.documentElement.requestFullscreen?.();
+  }
+
+  function renderGameToText() {
+    const visibleScreen = ['title', 'help', 'game', 'victory', 'defeat']
+      .find((name) => !document.getElementById(`${name}-screen`)?.hidden) || 'unknown';
+    const state = app.state;
+    const combat = state?.combat;
+    return JSON.stringify({
+      coordinateSystem: 'Combat board origin is top-left; x increases right and y increases down.',
+      screen: visibleScreen,
+      expedition: state ? {
+        seed: state.seed,
+        room: state.stageIndex + 1,
+        currentNodeId: state.currentNodeId,
+        potions: state.potions,
+        shortRestCharges: state.shortRestCharges,
+        relics: state.relics,
+        score: state.stats.score,
+        message: state.ui.message,
+        party: state.party.map((hero) => ({
+          id: hero.id,
+          classId: hero.classId,
+          hp: hero.hp,
+          maxHp: hero.maxHp,
+          alive: hero.alive
+        }))
+      } : null,
+      combat: combat ? {
+        round: combat.round,
+        activeId: combat.order[combat.turnIndex],
+        entities: combat.entities.filter((entity) => entity.alive).map((entity) => ({
+          id: entity.id,
+          side: entity.side,
+          hp: entity.hp,
+          maxHp: entity.maxHp,
+          x: entity.x,
+          y: entity.y,
+          conditions: entity.conditions?.map((condition) => condition.id) || []
+        }))
+      } : null
+    });
   }
 
   function runSelfChecks() {
